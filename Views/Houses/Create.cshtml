@@ -1,0 +1,64 @@
+@model MyProject.Models.House
+
+<h1>Создать новый дом</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Street" class="control-label">Улица:</label>
+                <input asp-for="Street" class="form-control" />
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HouseNumber" class="control-label">Номер дома:</label>
+                <input asp-for="HouseNumber" class="form-control" />
+                <span asp-validation-for="HouseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsManagedByUs" class="control-label">Дом на нашем управлении:</label>
+                <input asp-for="IsManagedByUs" type="checkbox" />
+            </div>
+            <div class="form-group">
+                <label asp-for="HasExternalManagementContract" class="control-label">Есть договор со сторонней УК:</label>
+                <input asp-for="HasExternalManagementContract" type="checkbox" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ExternalManagementCompanyId" class="control-label">Сторонняя УК:</label>
+                <select asp-for="ExternalManagementCompanyId" class="form-control" asp-items="@(ViewData["ExternalManagementCompanies"] as IEnumerable<SelectListItem>)">
+                    <option value="">Выберите стороннюю управляющую компанию</option>
+                </select>
+                <span asp-validation-for="ExternalManagementCompanyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Создать" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const hasExternalManagementContractCheckbox = document.querySelector('input[name="HasExternalManagementContract"]');
+            const externalManagementCompanySelect = document.querySelector('select[name="ExternalManagementCompanyId"]');
+
+            function toggleExternalManagementCompanySelect() {
+                if (hasExternalManagementContractCheckbox.checked) {
+                    externalManagementCompanySelect.disabled = false;
+                } else {
+                    externalManagementCompanySelect.value = "";
+                    externalManagementCompanySelect.disabled = true;
+                }
+            }
+
+            hasExternalManagementContractCheckbox.addEventListener('change', toggleExternalManagementCompanySelect);
+            toggleExternalManagementCompanySelect(); // Initial call to set the correct state
+        });
+    </script>
+}

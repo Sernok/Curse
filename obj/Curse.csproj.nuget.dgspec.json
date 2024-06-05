@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework\\Curse\\Curse.csproj": {}
+    "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework — копия\\Curse\\Curse.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework\\Curse\\Curse.csproj": {
+    "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework — копия\\Curse\\Curse.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework\\Curse\\Curse.csproj",
+        "projectUniqueName": "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework — копия\\Curse\\Curse.csproj",
         "projectName": "Curse",
-        "projectPath": "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework\\Curse\\Curse.csproj",
+        "projectPath": "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework — копия\\Curse\\Curse.csproj",
         "packagesPath": "C:\\Users\\HIPER\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework\\Curse\\obj\\",
+        "outputPath": "C:\\Users\\HIPER\\OneDrive\\Desktop\\cursework — копия\\Curse\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -48,6 +49,34 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.6, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[7.6.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -67,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

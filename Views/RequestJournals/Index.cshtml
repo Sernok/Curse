@@ -1,0 +1,51 @@
+@model IEnumerable<MyProject.Models.RequestJournal>
+
+<h1>Журнал заявок</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Дата регистрации</th>
+            <th>Номер квартиры</th>
+            <th>ID Дома</th>
+            <th>Имя клиента</th>
+            <th>Телефон клиента</th>
+            <th>Описание проблемы</th>
+            <th>Примечания</th>
+            <th>Статус заявки</th>
+            <th>Тип заявки</th>
+            <th>Срочная</th>
+            <th>Требуется присутствие клиента</th>
+            <th>ID исполнителя</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.RequestDate</td>
+            <td>@item.ApartmentNumber</td>
+            <td>@item.HouseId</td>
+            <td>@item.ClientName</td>
+            <td>@item.ClientPhone</td>
+            <td>@item.ProblemDescription</td>
+            <td>@item.Notes</td>
+            <td>@item.RequestStatus.StatusName</td>
+            <td>@item.RequestType.TypeName</td>
+            <td>@item.IsUrgent</td>
+            <td>@item.RequiresClientPresence</td>
+            <td>@item.ExecutorId</td>
+<td>
+    <a href="@Url.Action("Edit", new { id = item.Id })">Изменить</a> |
+    <a href="@Url.Action("Delete", new { id = item.Id })">Удалить</a>
+</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create", "RequestJournals")" class="btn btn-primary">Добавить новую заявку</a>
+<a href="@Url.Action("Dashboard", "Auth")" class="btn btn-secondary">Назад</a>

@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>Главная_страница</h1>
+<ul>
+    <li><a href="@Url.Action("Index", "RequestJournals")">Журнал заявок</a></li>
+    <li><a href="@Url.Action("Index", "Houses")">Справочник "Дома"</a></li>
+    <li><a href="@Url.Action("Index", "Executors")">Справочник "Исполнители"</a></li>
+    <li><a href="@Url.Action("Index", "OtherCompanies")">Справочник "Другие управляющие компании"</a></li>
+</ul>
+<form action="/Auth/Login" method="get">
+    <button type="submit">Выход</button>
+</form>
