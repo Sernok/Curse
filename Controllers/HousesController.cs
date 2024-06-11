@@ -25,36 +25,44 @@ namespace MyProject.Controllers
             return View(houses);
         }
 
-public IActionResult Create()
-{
-    // Передаем в представление список всех сторонних управляющих компаний
-    ViewData["ExternalManagementCompanies"] = new SelectList(_context.ExternalManagementCompanies, "Id", "CompanyName");
-    return View();
-}
+        public IActionResult Create()
+        {
+            // Передаем в представление список всех сторонних управляющих компаний
+            ViewData["ExternalManagementCompanies"] = new SelectList(_context.ExternalManagementCompanies, "Id", "CompanyName");
+            return View();
+        }
 
 [HttpPost]
 public async Task<IActionResult> Create(House house)
 {
     if (ModelState.IsValid)
     {
-        // Если дом находится на вашем управлении, устанавливаем id сторонней управляющей компании в null
+        // If the house is managed by us, set the external management company ID to null
         if (house.IsManagedByUs)
         {
             house.ExternalManagementCompanyId = null;
+        }
+        // If the house is associated with another company and also managed by us, remove the association with the other company
+        else if (house.ExternalManagementCompanyId != null)
+        {
+            var associatedHouse = await _context.Houses.FirstOrDefaultAsync(h => h.ExternalManagementCompanyId == house.ExternalManagementCompanyId);
+            if (associatedHouse != null)
+            {
+                associatedHouse.ExternalManagementCompanyId = null;
+                _context.Update(associatedHouse);
+            }
         }
 
         _context.Add(house);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
-    // В случае ошибки передаем в представление список всех сторонних управляющих компаний
+
+    // In case of errors, pass the list of all external management companies to the view
     ViewData["ExternalManagementCompanies"] = new SelectList(_context.ExternalManagementCompanies, "Id", "CompanyName", house.ExternalManagementCompanyId);
     return View(house);
 }
 
-
-
-        // Методы Edit, Delete и DeleteConfirmed оставляем без изменений
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -131,6 +139,10 @@ public async Task<IActionResult> Create(House house)
                 return NotFound();
             }
 
+            // Check if the house is referenced in any HouseRequests
+            bool isReferenced = await _context.RequestJournals.AnyAsync(hr => hr.HouseId == id);
+            ViewData["IsReferenced"] = isReferenced;
+
             return View(house);
         }
 
@@ -138,6 +150,20 @@ public async Task<IActionResult> Create(House house)
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var house = await _context.Houses.FindAsync(id);
+            if (house == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the house is referenced in any HouseRequests
+            bool isReferenced = await _context.RequestJournals.AnyAsync(hr => hr.HouseId == id);
+
+            if (isReferenced)
+            {
+                TempData["ErrorMessage"] = "Данный дом используется в заявке, удаление невозможно.";
+                return RedirectToAction(nameof(Index));
+            }
+
             _context.Houses.Remove(house);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

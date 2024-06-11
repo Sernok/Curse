@@ -1,5 +1,10 @@
 @model IEnumerable<MyProject.Models.House>
-
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <h1>Справочник "Дома"</h1>
 
 <table class="table">

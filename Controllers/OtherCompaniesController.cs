@@ -79,24 +79,38 @@ namespace MyProject.Controllers
             return View(company);
         }
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            var company = await _context.ExternalManagementCompanies.FindAsync(id);
-            if (company == null)
-            {
-                return NotFound();
-            }
-            return View(company);
-        }
+public async Task<IActionResult> Delete(int id)
+{
+    var company = await _context.ExternalManagementCompanies.FindAsync(id);
+    if (company == null)
+    {
+        return NotFound();
+    }
 
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var company = await _context.ExternalManagementCompanies.FindAsync(id);
-            _context.ExternalManagementCompanies.Remove(company);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+    // Check if the company is associated with any house
+    bool isAssociatedWithHouse = await _context.Houses.AnyAsync(h => h.ExternalManagementCompanyId == id);
+    if (isAssociatedWithHouse)
+    {
+        TempData["ErrorMessage"] = "Данная компания обслуживает один из домов, удаление невозможно.";
+    }
+
+    return View(company);
+}
+
+[HttpPost, ActionName("Delete")]
+public async Task<IActionResult> DeleteConfirmed(int id)
+{
+    var company = await _context.ExternalManagementCompanies.FindAsync(id);
+    if (company == null)
+    {
+        return NotFound();
+    }
+
+    _context.ExternalManagementCompanies.Remove(company);
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+}
+
 
         private bool CompanyExists(int id)
         {

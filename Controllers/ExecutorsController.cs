@@ -79,25 +79,41 @@ namespace MyProject.Controllers
             return View(executor);
         }
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            var executor = await _context.Executors.FirstOrDefaultAsync(m => m.Id == id);
-            if (executor == null)
-            {
-                return NotFound();
-            }
+public async Task<IActionResult> Delete(int id)
+{
+    var executor = await _context.Executors.FirstOrDefaultAsync(m => m.Id == id);
+    if (executor == null)
+    {
+        return NotFound();
+    }
 
-            return View(executor);
-        }
+    bool isReferenced = await _context.RequestJournals.AnyAsync(rj => rj.ExecutorId == id);
+    ViewData["IsReferenced"] = isReferenced;
 
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var executor = await _context.Executors.FindAsync(id);
-            _context.Executors.Remove(executor);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+    return View(executor);
+}
+
+      [HttpPost, ActionName("Delete")]
+public async Task<IActionResult> DeleteConfirmed(int id)
+{
+    var executor = await _context.Executors.FindAsync(id);
+    if (executor == null)
+    {
+        return NotFound();
+    }
+
+    bool isReferenced = await _context.RequestJournals.AnyAsync(rj => rj.ExecutorId == id);
+
+    if (isReferenced)
+    {
+        TempData["ErrorMessage"] = "Данный исполнитель используется в заявке, удаление невозможно.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    _context.Executors.Remove(executor);
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+}
 
         private bool ExecutorExists(int id)
         {

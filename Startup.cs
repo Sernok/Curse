@@ -42,7 +42,6 @@ namespace MyProject
 
             app.UseRouting();
 
-            app.UseAuthentication(); // If authentication is added
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

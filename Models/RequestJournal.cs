@@ -19,6 +19,5 @@ namespace MyProject.Models
         public bool RequiresClientPresence { get; set; }
         public int ExecutorId { get; set; }
         public Executor Executor { get; set; }
-        //public int EmployeeId { get; set; } // Добавленное свойство
     }
 }

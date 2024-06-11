@@ -4,6 +4,12 @@
 
 <div>
     <h4>Вы уверены, что хотите удалить этого исполнителя?</h4>
+    @if (ViewData["IsReferenced"] != null && (bool)ViewData["IsReferenced"])
+    {
+        <div class="alert alert-warning">
+            Данный исполнитель используется в заявке, удаление невозможно.
+        </div>
+    }
     <dl class="row">
         <dt class="col-sm-2">
             ID
@@ -25,9 +31,16 @@
         </dd>
     </dl>
 
-    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
-        <input type="hidden" name="handler" value="DeleteConfirmed" />
-        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+    @if (ViewData["IsReferenced"] == null || !(bool)ViewData["IsReferenced"])
+    {
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+            <input type="hidden" name="handler" value="DeleteConfirmed" />
+            <input type="submit" value="Удалить" class="btn btn-danger" /> |
+            <a href="javascript:history.back()" class="btn btn-secondary">Назад</a>
+        </form>
+    }
+    else
+    {
         <a href="javascript:history.back()" class="btn btn-secondary">Назад</a>
-    </form>
+    }
 </div>
